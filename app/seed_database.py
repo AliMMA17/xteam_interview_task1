@@ -1,6 +1,6 @@
 from .database import SessionLocal, engine  # Relative import
-from .models import Base, Product          # Relative import
-from sqlalchemy.orm import Session         # Explicitly import Session for type hinting
+from .models import Base, Product, User, PurchaseHistory  # Updated imports
+from sqlalchemy.orm import Session
 import random
 
 # Sample data for products
@@ -18,7 +18,15 @@ PRODUCTS = [
     {"name": "Blender", "category": "appliances", "price": 59.99, "rating": 4.4},
 ]
 
+# Sample users
+USERS = [
+    {"name": "Alice"},
+    {"name": "Bob"},
+    {"name": "Charlie"},
+]
+
 def seed_database():
+    """Seed the database with sample data"""
     # Create tables if they don't exist
     Base.metadata.create_all(bind=engine)
 
@@ -26,24 +34,41 @@ def seed_database():
     db: Session = SessionLocal()
 
     try:
-        # Check if data already exists
-        if db.query(Product).count() > 0:
-            print("Database already contains data. Skipping seed.")
-            return
+        # Check if products already exist
+        if db.query(Product).count() == 0:
+            for product_data in PRODUCTS:
+                product = Product(
+                    name=product_data["name"],
+                    category=product_data["category"],
+                    price=product_data["price"],
+                    rating=product_data["rating"]
+                )
+                db.add(product)
+            db.commit()
+            print(f"Seeded {len(PRODUCTS)} products.")
 
-        # Generate and insert products
-        for product_data in PRODUCTS:
-            product = Product(
-                name=product_data["name"],
-                category=product_data["category"],
-                price=product_data["price"],
-                rating=product_data["rating"]
-            )
-            db.add(product)
+        # Check if users already exist
+        if db.query(User).count() == 0:
+            for user_data in USERS:
+                user = User(name=user_data["name"])
+                db.add(user)
+            db.commit()
+            print(f"Seeded {len(USERS)} users.")
 
-        # Commit the transaction
-        db.commit()
-        print(f"Successfully seeded database with {len(PRODUCTS)} products.")
+        # Check if purchase history exists
+        if db.query(PurchaseHistory).count() == 0:
+            users = db.query(User).all()
+            products = db.query(Product).all()
+
+            # Assign random purchases to each user
+            for user in users:
+                purchased_products = random.sample(products, k=3)  # Each user buys 3 products
+                for product in purchased_products:
+                    purchase = PurchaseHistory(user_id=user.id, product_id=product.id)
+                    db.add(purchase)
+
+            db.commit()
+            print(f"Seeded purchase history for {len(users)} users.")
 
     except Exception as e:
         db.rollback()
