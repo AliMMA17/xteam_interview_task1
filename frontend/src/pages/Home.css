@@ -1,0 +1,66 @@
+/* Container styling */
+.p-6 {
+    padding: 24px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+/* Title styling */
+.text-2xl {
+    font-size: 1.5rem;
+    /* Equivalent to 2xl in Tailwind */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+/* User list items */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Link styling */
+.text-blue-500 {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.text-blue-500:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+/* Hover effect for list items */
+li:hover {
+    background-color: #f1f1f1;
+}
+
+/* "See All Products" Button */
+.products-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.products-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

@@ -5,11 +5,18 @@ from .database import engine, get_db
 from .recommendations import get_recommendations
 from fastapi import Path
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI(title="Product Recommendation System")
 
 models.Base.metadata.create_all(bind=engine)
 
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Replace with your React frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods (GET, POST, DELETE, etc.)
+    allow_headers=["*"],
+)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup logic

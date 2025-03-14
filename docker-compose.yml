@@ -1,8 +1,10 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  app:
-    build: .
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -16,10 +18,26 @@ services:
       - db
       - redis
     volumes:
-      - ./app:/app
+      - ./app:/app  # Mount only the backend folder
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - FASTAPI_APP_API_BASE_URL=http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app  # Mount frontend folder
+      - /app/node_modules
+    command: ["npm", "start"]
 
   db:
     image: postgres:15
+    restart: always
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -29,6 +47,7 @@ services:
 
   redis:
     image: redis:7
+    restart: always
     volumes:
       - redis_data:/data
 
