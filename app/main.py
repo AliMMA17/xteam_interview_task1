@@ -4,10 +4,22 @@ from . import models, schemas
 from .database import engine, get_db
 from .recommendations import get_recommendations
 from fastapi import Path
-
+from contextlib import asynccontextmanager
 app = FastAPI(title="Product Recommendation System")
 
 models.Base.metadata.create_all(bind=engine)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
+    print("Starting up the application...")
+    models.Base.metadata.create_all(bind=engine)  # Create tables on startup
+    yield  # Application runs here
+    # Shutdown logic
+    print("Shutting down database engine...")
+    engine.dispose()
+
 
 @app.get("/recommendations", response_model=list[schemas.Product])
 async def get_product_recommendations(user_id: int, db: Session = Depends(get_db)):
