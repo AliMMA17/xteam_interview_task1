@@ -6,7 +6,7 @@
 1. `docker compose up --build`
 
 ### Running locally:
-Backend:
+#### Backend:
 1.change the .env db and redis address to localhost
 2. `uvicorn app.main:app --reload`
 3. `python -m app.seed_database`
