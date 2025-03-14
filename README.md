@@ -7,7 +7,7 @@
 
 ### Running locally:
 #### Backend:
-1.change the .env db and redis address to localhost
+1.`change the .env db and redis address to localhost`
 2. `uvicorn app.main:app --reload`
 3. `python -m app.seed_database`
    
@@ -15,7 +15,7 @@
 3. Inside the `app` folder: `pytest test_main.py -v`
 
 Frontend:
-1. change the .env address to localhost
+1. `change the .env address to localhost`
 2. `cd frontend`
 3. `npm start`
 ### Postman Document for APIs:
