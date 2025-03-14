@@ -77,3 +77,13 @@ async def delete_product(product_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return product  # Optionally, return the deleted product as confirmation
+
+
+@app.get("/products/", response_model=list[schemas.ProductResponse])
+async def get_all_products(db: Session = Depends(get_db)):
+    products = db.query(models.Product).all()
+    return products
+
+@app.get("/users/", response_model=list[schemas.UserResponse])
+async def get_all_users(db: Session = Depends(get_db)):
+    return db.query(models.User).all()

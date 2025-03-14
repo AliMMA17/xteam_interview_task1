@@ -36,3 +36,11 @@ class PurchaseHistoryResponse(PurchaseHistoryBase):
 
     class Config:
         from_attributes = True
+
+
+class UserResponse(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True  # Ensures compatibility with SQLAlchemy models
